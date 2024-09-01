@@ -1,28 +1,34 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-
-const dummyStoreData = {
-  1: { name: 'Walmart', items: [{ name: 'Milk', price: 3.99 }, { name: 'Eggs', price: 2.99 }] },
-  2: { name: 'Kroger', items: [{ name: 'Milk', price: 4.29 }, { name: 'Eggs', price: 3.19 }] },
-  3: { name: 'Target', items: [{ name: 'Milk', price: 4.05 }, { name: 'Eggs', price: 3.00 }] },
-};
+import axios from 'axios';
 
 export default function StoreDetailPage() {
   const router = useRouter();
   const { id } = router.query;
-  
-  const storeId = typeof id === 'string' ? parseInt(id) : null;
-  const store = storeId ? dummyStoreData[storeId as keyof typeof dummyStoreData] : null;
+  const [items, setItems] = useState<{ name: string, price: string }[]>([]);
 
-  if (!store) return <p>Store not found</p>;
+  useEffect(() => {
+    if (id) {
+      axios
+        .get('/api/scrape', { params: { storeUrl: `https://example.com/store/${id}` } })
+        .then(response => {
+          setItems(response.data.items);
+        })
+        .catch(error => {
+          console.error('Error fetching store details:', error);
+        });
+    }
+  }, [id]);
+
+  if (!items.length) return <p>Store not found</p>;
 
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-4">{store.name}</h2>
+      <h2 className="text-2xl font-bold mb-4">Store Details</h2>
       <ul className="space-y-2">
-        {store.items.map((item, index) => (
+        {items.map((item, index) => (
           <li key={index} className="bg-white p-2 rounded shadow-sm">
-            <p className="text-lg">{item.name}: ${item.price.toFixed(2)}</p>
+            <p className="text-lg">{item.name}: ${parseFloat(item.price).toFixed(2)}</p>
           </li>
         ))}
       </ul>
