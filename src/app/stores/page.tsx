@@ -2,23 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 
+type Item = {
+  name: string;
+  price: string;
+};
+
 export default function StoresPage() {
   const router = useRouter();
   const { groceryList, zipCode } = router.query;
-
   const [stores, setStores] = useState<{ id: number, name: string, total: number }[]>([]);
 
   useEffect(() => {
     if (groceryList && zipCode) {
       axios
-        .get('/api/scrape', { params: { groceryList, zipCode } })
+        .get('/api/scrape', { params: { storeUrl: 'https://example.com' } })
         .then(response => {
-          // Placeholder for actual data
-          setStores([
-            { id: 1, name: 'Walmart', total: 45.99 },
-            { id: 2, name: 'Kroger', total: 47.50 },
-            { id: 3, name: 'Target', total: 46.75 },
-          ]);
+          const items: Item[] = response.data.items;
+          const total = items.reduce((sum: number, item: Item) => sum + parseFloat(item.price), 0);
+          setStores([{ id: 1, name: 'Example Store', total }]);
         })
         .catch(error => {
           console.error('Error fetching store data:', error);
