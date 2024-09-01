@@ -17,13 +17,9 @@
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background-color: #f8f9fa; /* Light background for better contrast */
+  color: #212529; /* Dark text color */
+  font-family: Arial, sans-serif;
 }
 
 @layer utilities {
