@@ -12,11 +12,14 @@ export default function HomePage() {
   const router = useRouter();
 
   const onSubmit = (data: FormData) => {
-    // Redirect to the stores page with query params
-    router.push({
-      pathname: '/stores',
-      query: { groceryList: data.groceryList, zipCode: data.zipCode }
-    });
+    // Construct the query string manually
+    const queryString = new URLSearchParams({
+      groceryList: data.groceryList,
+      zipCode: data.zipCode,
+    }).toString();
+
+    // Use router.push with a full URL string
+    router.push(`/stores?${queryString}`);
   };
 
   return (
