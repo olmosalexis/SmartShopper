@@ -14,19 +14,17 @@ export default function HomePage() {
   const router = useRouter();
 
   const onSubmit = (data: FormData) => {
-    // Construct the query string manually
     const queryString = new URLSearchParams({
       groceryList: data.groceryList,
       zipCode: data.zipCode,
     }).toString();
 
-    // Use router.push with a full URL string
     router.push(`/stores?${queryString}`);
   };
 
   return (
-    <div className="bg-white p-6 rounded shadow-md">
-      <h2 className="text-2xl font-bold mb-4">Find the Best Prices for Your Grocery List</h2>
+    <div className="bg-white p-6 rounded shadow-md max-w-md mx-auto">
+      <h2 className="text-2xl font-bold mb-4 text-center">Find the Best Prices for Your Grocery List</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-4">
           <label className="block text-sm font-medium mb-2" htmlFor="groceryList">
@@ -54,7 +52,7 @@ export default function HomePage() {
         </div>
         <button
           type="submit"
-          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+          className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded shadow-lg transform hover:scale-105 transition-transform duration-300 ease-in-out"
         >
           Find Stores
         </button>
