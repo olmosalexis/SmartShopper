@@ -12,6 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const items = await scrapeStoreData(storeUrl);
     res.status(200).json({ items });
   } catch (error) {
+    console.error('Error scraping store data:', error);
     res.status(500).json({ error: 'Failed to scrape store data' });
   }
 }
