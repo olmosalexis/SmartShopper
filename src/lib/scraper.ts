@@ -10,7 +10,7 @@ export async function scrapeStoreData(storeUrl: string) {
   });
 
   const page = await browser.newPage();
-  await page.goto(storeUrl);
+  await page.goto(storeUrl, { waitUntil: "networkidle2" }); // Wait for the page to fully load
 
   const items = await page.evaluate(() => {
     const itemElements = document.querySelectorAll(".item-selector");
